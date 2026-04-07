@@ -11,6 +11,8 @@ from openai import OpenAI
 
 load_dotenv()
 
+PUBLIC_BASE_URL = os.getenv("PUBLIC_BASE_URL", "https://kt-rag-api.onrender.com").strip()
+
 SYSTEM_INSTRUCTIONS = """Du svarar på frågor om Kyrkoordningen för Svenska kyrkan.
 
 Regler:
@@ -51,7 +53,11 @@ class AskResponse(BaseModel):
     response_id: str | None = None
 
 
-app = FastAPI(title="Kyrkoordningen RAG API", version="1.0.0")
+app = FastAPI(
+    title="Kyrkoordningen RAG API",
+    version="1.0.0",
+    servers=[{"url": PUBLIC_BASE_URL}],
+)
 
 
 @app.get("/health")
